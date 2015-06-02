@@ -11,6 +11,7 @@ import javax.swing.GroupLayout.Alignment;
 
 
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
@@ -18,6 +19,7 @@ import java.awt.SystemColor;
 import javax.swing.JTable;
 
 import Hilos.ThreadRadiosOnline;
+
 import javax.swing.JLabel;
 
 
@@ -37,6 +39,7 @@ public 	JButton btn_Off;
 	private JPanel panel_1;
 	private JScrollPane scrollPane_1;
 	private JTable table;
+	private Thread timer;
 
 	//Thread t ;
 
@@ -105,15 +108,16 @@ public 	JButton btn_Off;
 		
 		btn_Off.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HiloRadioOnLine.desconectar();
+				
 				btn_On.setEnabled(true);
 				btn_Off.setEnabled(false);
+				
 			}
 		});
 		btn_On.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HiloRadioOnLine=new ThreadRadiosOnline(table);
-				HiloRadioOnLine.start();
+				
+				
 				btn_Off.setEnabled(true);
 				btn_On.setEnabled(false);
 			}
@@ -121,6 +125,32 @@ public 	JButton btn_Off;
 		contentPane.setLayout(gl_contentPane);
 		
 	}
+ public  class Timer extends Thread{
+
+	public void run() {
+		try {
+			
+
+			HiloRadioOnLine=new ThreadRadiosOnline(table);
+			HiloRadioOnLine.start();
+			Thread.sleep(5000);
+			
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	 
+	 
+	 
+	 
+	 
+	 
+ }
+
+
+
 }
 
  

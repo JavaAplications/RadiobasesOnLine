@@ -9,33 +9,37 @@ import javax.swing.table.DefaultTableModel;
 import BBDD.Conexion;
 
 public class ThreadRadiosOnline extends Thread{
-	  boolean continuar = true;
-	  //Conexion con;
+	 
+	  Conexion con;
 	  JTable JTable1;
-	  
+	 
+	boolean continuar=true;
+	 DefaultTableModel dfm;
 	  ResultSet rs=null;
 	public ThreadRadiosOnline( JTable JTable1){
 		
 		this.JTable1=JTable1;
 		
-		
 	}
 	
-	public void desconectar(){
+	public void detener(){
 		
-		 continuar = false;
+		continuar=false;
+		
 		
 	}
-	
 	
 	public void run() {
-		 DefaultTableModel dfm = new DefaultTableModel();
-			JTable1.setModel(dfm);
-			dfm.setColumnIdentifiers(new Object[]{"IdRadios","Cantidad"});
-		while(continuar){
+	
 		
-		try {
-			Thread.sleep(5000);
+			dfm = new DefaultTableModel();
+			
+			JTable1.setModel(dfm);
+			
+			
+			dfm.setColumnIdentifiers(new Object[]{"IdRadios","Cantidad"});
+		
+		
 			System.out.println("Consulta");
 			
 			
@@ -44,25 +48,15 @@ public class ThreadRadiosOnline extends Thread{
 				try {
 					while(rs.next()){
 						dfm.addRow(new Object[]{rs.getString("IdRadios"),rs.getString("Cantidad")});
-					
-						
+							
 								
 					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
-			
-			
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-	}
+	
+	
 	}
 	
 
