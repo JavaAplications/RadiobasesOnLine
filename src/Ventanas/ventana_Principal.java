@@ -39,7 +39,7 @@ public 	JButton btn_Off;
 	private JPanel panel_1;
 	private JScrollPane scrollPane_1;
 	private JTable table;
-	private Thread timer;
+	public Thread timer;
 
 	//Thread t ;
 
@@ -111,6 +111,7 @@ public 	JButton btn_Off;
 				
 				btn_On.setEnabled(true);
 				btn_Off.setEnabled(false);
+			
 				
 			}
 		});
@@ -120,14 +121,39 @@ public 	JButton btn_Off;
 				
 				btn_Off.setEnabled(true);
 				btn_On.setEnabled(false);
+				
+				timer=new Timersito();
+				timer.start();
+				
 			}
 		});
 		contentPane.setLayout(gl_contentPane);
 		
 	}
- public  class Timer extends Thread{
 
+	
+	
+	
+	public  class Timersito extends Thread{
+
+		
+		boolean flag=true;
+		
+		public Timersito(){
+			
+			
+		}
+		
+	public void detener(){
+			
+			flag=false;
+			
+		}
+		
+		
 	public void run() {
+		
+		while(flag){
 		try {
 			
 
@@ -139,7 +165,7 @@ public 	JButton btn_Off;
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}}
 	}
 	 
 	 
