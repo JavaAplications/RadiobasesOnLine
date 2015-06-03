@@ -61,7 +61,7 @@ public class ThreadRadiosOnline extends Thread{
 						JTable1.setDefaultRenderer(Object.class, new TablaRender(cantidad,c));
 						c++;
 						
-								
+								//ggggg
 					}
 					
 				} catch (SQLException e) {
