@@ -12,15 +12,25 @@ import javax.swing.GroupLayout.Alignment;
 
 
 
+
+
+
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.SystemColor;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JTable;
 
+import BBDD.Conexion;
 import Hilos.ThreadRadiosOnline;
 
 import javax.swing.JLabel;
+import javax.swing.ScrollPaneConstants;
 
 
 
@@ -35,12 +45,14 @@ public class ventana_Principal extends JFrame {
 	ThreadRadiosOnline HiloRadioOnLine;
 	public JButton btn_On;
 public 	JButton btn_Off;
+ public JButton botonRadiobase;
 	public JLabel lbl_Prueba;
 	private JPanel panel_1;
-	private JScrollPane scrollPane_1;
-	private JTable table;
 	public Thread timer;
-
+	private JScrollPane scrollPane_Radiobases;
+	public JPanel panel_Radiobases;
+	Conexion con;
+	ResultSet rs=null;
 	//Thread t ;
 
 	/**
@@ -48,23 +60,17 @@ public 	JButton btn_Off;
 	 */
 	public ventana_Principal() {
 		setTitle("Radiobases Online");
-		setResizable(false);
 	
 		Inicializacion();
-		
-		btn_Off.setEnabled(false);
-		
-		JLabel lbl_Prueba = new JLabel("New label");
-		lbl_Prueba.setBounds(221, 28, 46, 14);
-		panel_1.add(lbl_Prueba);
 	
-	
+		
+   
 	}
 
 	private void Inicializacion() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 384, 400);
+		setBounds(100, 100, 605, 721);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -95,15 +101,14 @@ public 	JButton btn_Off;
 		btn_Off = new JButton("OFF");
 		btn_Off.setBounds(28, 45, 117, 23);
 		panel_1.add(btn_Off);
-		
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(28, 79, 320, 225);
-		panel_1.add(scrollPane_1);
-		
-		table = new JTable();
-		scrollPane_1.setViewportView(table);
 	//	 DefaultCaret caret = (DefaultCaret)textAreaConsolaDeKeeps.getCaret();
 	//	 caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+	
+		
+		
+		
+		
 		
 		
 		btn_Off.addActionListener(new ActionListener() {
@@ -129,8 +134,64 @@ public 	JButton btn_Off;
 		});
 		contentPane.setLayout(gl_contentPane);
 		
+		
+		
+		btn_Off.setEnabled(false);
+		
+		scrollPane_Radiobases = new JScrollPane();
+		scrollPane_Radiobases.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_Radiobases.setBounds(10, 101, 536, 549);
+		panel_1.add(scrollPane_Radiobases);
+		
+		panel_Radiobases = new JPanel();
+		scrollPane_Radiobases.setViewportView(panel_Radiobases);
+		panel_Radiobases.setLayout(new GridLayout(30, 10,5, 5));
+		Online pepe=new Online();
+		pepe.start();
+		
 	}
 
+	public class Online extends Thread{
+		
+		public void run(){
+			
+			try {
+				con= new Conexion();
+				rs=con.ConsultarRadiosOnline();
+		
+				int NumRadiobases= con.CantidadRadiobases();
+				System.out.println("NumRadiobases:"+NumRadiobases);
+				
+				
+				while(rs.next()){
+					
+					String IdRadio=rs.getString("IdRadios");
+					String Nombre=con.ConsultarNombre(Integer.parseInt(IdRadio));
+					System.out.println("IdRadio:"+IdRadio);
+					System.out.println("Nombre:"+Nombre);
+					
+					panel_Radiobases.add(botonRadiobase=new JButton(Nombre));
+					int cantidad=Integer.parseInt(rs.getString("Cantidad"));
+					
+					if (cantidad>2){
+						botonRadiobase.setBackground(Color.GREEN);}else{botonRadiobase.setBackground(Color.RED);}
+					
+				}
+				
+					
+					
+							
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
 	
 	
 	
@@ -157,7 +218,7 @@ public 	JButton btn_Off;
 		try {
 			
 
-			HiloRadioOnLine=new ThreadRadiosOnline(table);
+			HiloRadioOnLine=new ThreadRadiosOnline(panel_Radiobases);
 			HiloRadioOnLine.start();
 			Thread.sleep(5000);
 			

@@ -73,6 +73,29 @@ public String ConsultarNombre(int IdRadiobase)
 }
 
 
+public int CantidadRadiobases()
+{
+	con=Conectar();
+	Statement st;
+	ResultSet rs=null;
+	int cantidad = 0 ;
+	try {
+		st=con.createStatement();
+		rs=st.executeQuery("SELECT * FROM `radiobases`");
+		
+		rs.last();
+		cantidad=rs.getRow();
+		
+	
+	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			cantidad=0;
+	}
+	
+	return cantidad;
+}
+
 
 
 }
