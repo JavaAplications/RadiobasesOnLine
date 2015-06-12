@@ -46,6 +46,7 @@ public ResultSet ConsultarRadiosOnline()
 	return rs;
 }
 
+
 public String ConsultarNombre(int IdRadiobase)
 {
 	con=Conectar();
