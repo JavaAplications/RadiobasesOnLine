@@ -16,6 +16,7 @@ import javax.swing.GroupLayout.Alignment;
 
 
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -64,7 +65,10 @@ public 	JButton btn_Off;
 		Inicializacion();
 	
 		
-   
+		Online pepe=new Online();
+		pepe.start();
+	
+			
 	}
 
 	private void Inicializacion() {
@@ -139,54 +143,46 @@ public 	JButton btn_Off;
 		btn_Off.setEnabled(false);
 		
 		scrollPane_Radiobases = new JScrollPane();
-		scrollPane_Radiobases.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_Radiobases.setBounds(10, 101, 536, 549);
 		panel_1.add(scrollPane_Radiobases);
 		
 		panel_Radiobases = new JPanel();
 		scrollPane_Radiobases.setViewportView(panel_Radiobases);
 		panel_Radiobases.setLayout(new GridLayout(30, 10,5, 5));
-		Online pepe=new Online();
-		pepe.start();
+		
+		
+	
 		
 	}
 
 	public class Online extends Thread{
 		
+	public void OnLine(){
+		
+		
+		
+	}
+		
 		public void run(){
 			
-			try {
-				con= new Conexion();
-				rs=con.ConsultarRadiosOnline();
-		
-				int NumRadiobases= con.CantidadRadiobases();
-				System.out.println("NumRadiobases:"+NumRadiobases);
+			con= new Conexion();
+			//rs=con.ConsultarRadiosOnline();
+
+			int NumRadiobases= con.CantidadRadiobases();
+			System.out.println("NumRadiobases:"+NumRadiobases);
+			
+			for(int i=1;i<NumRadiobases+1;i++){
+				
+				String nombre=con.ConsultarNombre(i);
+				System.out.println("Radiobase: "+nombre);
+					
+				botonRadiobase=new JButton(nombre+" Id:"+i);
+				
+				botonRadiobase.setBackground(Color.GREEN);
+				panel_Radiobases.add(botonRadiobase);
 				
 				
-				while(rs.next()){
-					
-					String IdRadio=rs.getString("IdRadios");
-					String Nombre=con.ConsultarNombre(Integer.parseInt(IdRadio));
-					System.out.println("IdRadio:"+IdRadio);
-					System.out.println("Nombre:"+Nombre);
-					
-					panel_Radiobases.add(botonRadiobase=new JButton(Nombre));
-					int cantidad=Integer.parseInt(rs.getString("Cantidad"));
-					
-					if (cantidad>2){
-						botonRadiobase.setBackground(Color.GREEN);}else{botonRadiobase.setBackground(Color.RED);}
-					
 				}
-				
-					
-					
-							
-				
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 		}
 		

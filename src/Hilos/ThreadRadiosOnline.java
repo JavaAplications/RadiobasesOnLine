@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import Ventanas.TablaRender;
+
 import Ventanas.ventana_Principal;
 import BBDD.Conexion;
 
